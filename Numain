@@ -4,7 +4,7 @@ local InterfaceManager = loadstring(game:HttpGetAsync("https://raw.githubusercon
 
 local Window = Library:CreateWindow{
     Title = game:GetService("MarketplaceService"):GetProductInfo(85896571713843).Name,
-    SubTitle = "by Numa",
+    SubTitle = " by Numa",
     TabWidth = 160,
     Size = UDim2.fromOffset(500, 350),
     Resize = true,
@@ -181,19 +181,36 @@ AutoPlayRobotClawToggle:OnChanged(function()
     end
 end)
 
-local AutoGameEggToggle = Tabs.Main:CreateToggle("AutoGameEgg", {
-    Title = "Auto Open Game Egg",
-    Default = false,
-})
+local RS, PLR, PF = game:GetService("ReplicatedStorage"), game.Players.LocalPlayer, game:GetService("PathfindingService")
+local EV = RS.Shared.Framework.Network.Remote.Event
+local TARGS = {"Teleport","Workspace.Worlds.Minigame Paradise.FastTravel.Spawn"}
+local HARGS = {"HatchEgg","Game Egg",6}
+local DEST = {Vector3.new(9885.53,26.65,144.93), Vector3.new(9837.04,27.65,170.97)}
+local TOG = Tabs.Main:CreateToggle("AutoGameEgg",{Title="Auto Open Game Egg",Default=false,Description = "auto walk to egg + hatch",})
 
-AutoGameEggToggle:OnChanged(function()
-    print("AutoGameEggToggle changed:", Options.AutoGameEgg.Value)
-    AutoGameEgg = Options.AutoGameEgg.Value
-    while AutoGameEgg do
+local running = false
+
+TOG:OnChanged(function(on) -- ty chatgpt Numa suck at path ...
+    running = on
+    if not running then return end
+    -- Teleport
+    EV:FireServer(unpack(TARGS))
+    task.wait(1)
+    -- Ensure character
+    local c = PLR.Character or PLR.CharacterAdded:Wait()
+    local h = c:WaitForChild("Humanoid",5)
+    -- Walk through destinations
+    for _,v in ipairs(DEST) do
+        h:MoveTo(v)
+        h.MoveToFinished:Wait()
+    end
+    -- Hatch loop
+    while running and TOG.Value do
         task.wait(0.35)
-        local args = {[1] = "HatchEgg",[2] = "Game Egg",[3] = 6}game:GetService("ReplicatedStorage"):WaitForChild("Shared"):WaitForChild("Framework"):WaitForChild("Network"):WaitForChild("Remote"):WaitForChild("Event"):FireServer(unpack(args))
+        EV:FireServer(unpack(HARGS))
     end
 end)
+
 
 SaveManager:SetLibrary(Library)
 InterfaceManager:SetLibrary(Library)
