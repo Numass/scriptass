@@ -212,7 +212,7 @@ TOG:OnChanged(function(on) -- ty chatgpt Numa suck at path ...
     end
 end)
 
-Tabs.Optimization:CreateParagraph("Aligned Paragraph", {
+Tabs.Opti:CreateParagraph("Aligned Paragraph", {
     Title = "Coming Soon",
     Content = "Waiting for Numa ⭐",
     TitleAlignment = "Middle",
