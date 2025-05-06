@@ -16,7 +16,7 @@ This project and all of its contents—including code, assets, documentation, an
 2. **Attribution Required**  
    - If you build on top of this work, you must clearly attribute the original author:  
      ```
-     “This project is based on work owned by Numa (https://github.com/numa).”
+     “This project is based on work owned by Numa (https://github.com/numass).”
      ```
 3. **No Derivative Licensing**  
    - You may not relicense, sublicense, or otherwise offer this code under a different license.
