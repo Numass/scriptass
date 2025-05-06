@@ -31,6 +31,7 @@ local dice = game:GetService("ReplicatedStorage").Assets.Minigames.Dice:GetChild
 local Tabs = {
     Info = Window:CreateTab{ Title = "Info", Icon = "rbxassetid://81233184473110" },
     Main = Window:CreateTab{ Title = "Minigames", Icon = "rbxassetid://105783201761273" },
+    Opti = Window:CreateTab{ Title = "Optimization", Icon = "rbxassetid://90057292389484" },
     Settings = Window:CreateTab{ Title = "Settings", Icon = "rbxassetid://104980967698899" },
 }
 
@@ -210,6 +211,13 @@ TOG:OnChanged(function(on) -- ty chatgpt Numa suck at path ...
         EV:FireServer(unpack(HARGS))
     end
 end)
+
+Tabs.Optimization:CreateParagraph("Aligned Paragraph", {
+    Title = "Coming Soon",
+    Content = "Waiting for Numa ⭐",
+    TitleAlignment = "Middle",
+    ContentAlignment = Enum.TextXAlignment.Center,
+})
 
 
 SaveManager:SetLibrary(Library)
