@@ -38,7 +38,7 @@ local Tabs = {
 local Options = Library.Options
 
 Tabs.Info:CreateParagraph("Aligned Paragraph", {
-    Title = "BGSI Main script (onlt for mini games for now)",
+    Title = "BGSI Main script (In Dev)",
     Content = "Made by Numa ⭐",
     TitleAlignment = "Middle",
     ContentAlignment = Enum.TextXAlignment.Center,
