@@ -10,7 +10,7 @@ local Window = Library:CreateWindow{
     Resize = true,
     MinSize = Vector2.new(470, 380),
     Acrylic = false,
-    Theme = "Dark",
+    Theme = "Tomorrow Night Blue",
     MinimizeKey = Enum.KeyCode.RightControl,
 }
 
@@ -217,9 +217,9 @@ InterfaceManager:SetLibrary(Library)
 SaveManager:IgnoreThemeSettings()
 SaveManager:SetIgnoreIndexes{}
 InterfaceManager:SetFolder("FluentScriptHub")
-SaveManager:SetFolder("FluentScriptHub/specific-game")
+SaveManager:SetFolder("FluentScriptHub/Numain")
 InterfaceManager:BuildInterfaceSection(Tabs.Settings)
-SaveManager:BuildConfigSection(Tabs.Settings)
+-- SaveManager:BuildConfigSection(Tabs.Settings)
 Window:SelectTab(1)
 Library:Notify{ Title = "the script", Content = "ts loaded GL by Numa ", Duration = 8 }
 SaveManager:LoadAutoloadConfig()
