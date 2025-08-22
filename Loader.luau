@@ -9,7 +9,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 -- Game configurations
 local gameConfigs = {
     [15420499516] = {
-        name = "Slaime",
+        name = "Slime Incremental",
         script = "https://raw.githubusercontent.com/Numass/SLaime/refs/heads/main/Slaime.lua"
     },
     [537413528] = {
