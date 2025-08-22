@@ -1,5 +1,4 @@
 -- Custom Game Loader with Game ID Detection
--- No full-screen background, just a small popup
 
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
@@ -9,7 +8,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 -- Game configurations
 local gameConfigs = {
     [15420499516] = {
-        name = "Slime Incremental",
+        name = "Slaime",
         script = "https://raw.githubusercontent.com/Numass/SLaime/refs/heads/main/Slaime.lua"
     },
     [537413528] = {
@@ -122,23 +121,23 @@ local function createLoader()
     return screenGui, container, shadow, mainText, statusText, progressBg, progressFill
 end
 
--- Animate progress (smoother)
+-- Animate progress (slower, smoother)
 local function animateProgress(progressFill, progress)
-    local tween = TweenService:Create(progressFill, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
+    local tween = TweenService:Create(progressFill, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
         Size = UDim2.new(progress, 0, 1, 0)
     })
     tween:Play()
     return tween
 end
 
--- Animate container size (smoother)
+-- Animate container size (slower, more elegant)
 local function animateContainerSize(container, shadow, newSize)
-    local containerTween = TweenService:Create(container, TweenInfo.new(0.6, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
+    local containerTween = TweenService:Create(container, TweenInfo.new(0.8, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Size = newSize,
         Position = UDim2.new(0.5, -newSize.X.Offset/2, 0.5, -newSize.Y.Offset/2)
     })
     
-    local shadowTween = TweenService:Create(shadow, TweenInfo.new(0.6, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
+    local shadowTween = TweenService:Create(shadow, TweenInfo.new(0.8, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Size = UDim2.new(1, newSize.X.Offset + 10, 1, newSize.Y.Offset + 10),
         Position = UDim2.new(0.5, -(newSize.X.Offset + 10)/2, 0.5, -(newSize.Y.Offset + 10)/2)
     })
@@ -152,15 +151,15 @@ end
 local function runLoader()
     local screenGui, container, shadow, mainText, statusText, progressBg, progressFill = createLoader()
     
-    -- Initial entrance animation (smoother and faster)
+    -- Initial entrance animation (slower, more elegant)
     container.Position = UDim2.new(0.5, -125, 1.5, 0)
     shadow.Position = UDim2.new(0.5, -130, 1.5, 0)
     
-    local entranceTween = TweenService:Create(container, TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
+    local entranceTween = TweenService:Create(container, TweenInfo.new(0.8, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -125, 0.5, -60)
     })
     
-    local shadowEntranceTween = TweenService:Create(shadow, TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
+    local shadowEntranceTween = TweenService:Create(shadow, TweenInfo.new(0.8, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -130, 0.5, -65)
     })
     
@@ -181,12 +180,12 @@ local function runLoader()
         
         wait(1.5)  -- Faster error display
         
-        -- Exit animation (smoother)
-        local exitTween = TweenService:Create(container, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+        -- Exit animation (slower, more elegant)
+        local exitTween = TweenService:Create(container, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
             Position = UDim2.new(0.5, -125, -1.5, 0)
         })
         
-        local shadowExitTween = TweenService:Create(shadow, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+        local shadowExitTween = TweenService:Create(shadow, TweenInfo.new(0.6, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
             Position = UDim2.new(0.5, -130, -1.5, 0)
         })
         
@@ -203,7 +202,7 @@ local function runLoader()
     mainText.TextColor3 = Color3.fromRGB(100, 255, 100)
     statusText.Text = "Game: " .. gameConfig.name
     
-    wait(1.0)  -- Faster greeting display
+    wait(1.5)  -- Slower greeting display for better visual experience
     
     -- Grow the window bigger for greeting and start loading
     local growTween = animateContainerSize(container, shadow, UDim2.new(0, 350, 0, 170))  -- Bigger greeting box
@@ -226,15 +225,15 @@ local function runLoader()
         statusText.Text = stage[2]
         local tween = animateProgress(progressFill, stage[1])
         tween.Completed:Wait()
-        wait(0.2)  -- Faster loading stages
+        wait(0.1)  -- Much faster loading process
     end
     
-    -- Move up higher and show "Have fun" message
-    local moveUpTween = TweenService:Create(container, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    -- Move up higher and show "Have fun" message (slower animation)
+    local moveUpTween = TweenService:Create(container, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -175, 0.2, -85)  -- Higher position
     })
     
-    local shadowMoveUpTween = TweenService:Create(shadow, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    local shadowMoveUpTween = TweenService:Create(shadow, TweenInfo.new(0.7, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -180, 0.2, -90)
     })
     
@@ -247,7 +246,7 @@ local function runLoader()
     statusText.Text = "Starting script..."
     progressBg.Visible = false
     
-    wait(0.8)  -- Faster "Have fun" display
+    wait(1.2)  -- Slower "Have fun" display for better visual experience
     
     -- Load the actual script
     local success, result = pcall(function()
