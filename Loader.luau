@@ -122,23 +122,23 @@ local function createLoader()
     return screenGui, container, shadow, mainText, statusText, progressBg, progressFill
 end
 
--- Animate progress
+-- Animate progress (smoother)
 local function animateProgress(progressFill, progress)
-    local tween = TweenService:Create(progressFill, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+    local tween = TweenService:Create(progressFill, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.Out), {
         Size = UDim2.new(progress, 0, 1, 0)
     })
     tween:Play()
     return tween
 end
 
--- Animate container size
+-- Animate container size (smoother)
 local function animateContainerSize(container, shadow, newSize)
-    local containerTween = TweenService:Create(container, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    local containerTween = TweenService:Create(container, TweenInfo.new(0.6, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Size = newSize,
         Position = UDim2.new(0.5, -newSize.X.Offset/2, 0.5, -newSize.Y.Offset/2)
     })
     
-    local shadowTween = TweenService:Create(shadow, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    local shadowTween = TweenService:Create(shadow, TweenInfo.new(0.6, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Size = UDim2.new(1, newSize.X.Offset + 10, 1, newSize.Y.Offset + 10),
         Position = UDim2.new(0.5, -(newSize.X.Offset + 10)/2, 0.5, -(newSize.Y.Offset + 10)/2)
     })
@@ -152,15 +152,15 @@ end
 local function runLoader()
     local screenGui, container, shadow, mainText, statusText, progressBg, progressFill = createLoader()
     
-    -- Initial entrance animation
+    -- Initial entrance animation (smoother and faster)
     container.Position = UDim2.new(0.5, -125, 1.5, 0)
     shadow.Position = UDim2.new(0.5, -130, 1.5, 0)
     
-    local entranceTween = TweenService:Create(container, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    local entranceTween = TweenService:Create(container, TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -125, 0.5, -60)
     })
     
-    local shadowEntranceTween = TweenService:Create(shadow, TweenInfo.new(0.6, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+    local shadowEntranceTween = TweenService:Create(shadow, TweenInfo.new(0.5, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {
         Position = UDim2.new(0.5, -130, 0.5, -65)
     })
     
@@ -168,9 +168,9 @@ local function runLoader()
     shadowEntranceTween:Play()
     entranceTween.Completed:Wait()
     
-    wait(0.5)
+    wait(0.2)  -- Faster initial wait
     
-    -- Check game ID
+    -- Check game ID (faster detection)
     local gameId = game.PlaceId
     local gameConfig = gameConfigs[gameId]
     
@@ -179,28 +179,34 @@ local function runLoader()
         mainText.TextColor3 = Color3.fromRGB(255, 100, 100)
         statusText.Text = "Game ID: " .. tostring(gameId)
         
-        wait(2)
+        wait(1.5)  -- Faster error display
         
-        -- Exit animation
-        local exitTween = TweenService:Create(container, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+        -- Exit animation (smoother)
+        local exitTween = TweenService:Create(container, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
             Position = UDim2.new(0.5, -125, -1.5, 0)
         })
+        
+        local shadowExitTween = TweenService:Create(shadow, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+            Position = UDim2.new(0.5, -130, -1.5, 0)
+        })
+        
         exitTween:Play()
+        shadowExitTween:Play()
         exitTween.Completed:Connect(function()
             screenGui:Destroy()
         end)
         return
     end
     
-    -- Game is compatible, greet user
+    -- Game is compatible, greet user with bigger window
     mainText.Text = "Hi " .. player.DisplayName .. "!"
     mainText.TextColor3 = Color3.fromRGB(100, 255, 100)
     statusText.Text = "Game: " .. gameConfig.name
     
-    wait(1.5)
+    wait(1.0)  -- Faster greeting display
     
-    -- Grow the window and start loading
-    local growTween = animateContainerSize(container, shadow, UDim2.new(0, 300, 0, 150))
+    -- Grow the window bigger for greeting and start loading
+    local growTween = animateContainerSize(container, shadow, UDim2.new(0, 350, 0, 170))  -- Bigger greeting box
     growTween.Completed:Wait()
     
     -- Show progress bar and start loading animation
@@ -208,27 +214,32 @@ local function runLoader()
     mainText.Text = "Loading " .. gameConfig.name
     statusText.Text = "Please wait..."
     
-    -- Loading stages
+    -- Loading stages (faster)
     local stages = {
-        {0.2, "Connecting..."},
-        {0.4, "Downloading..."},
-        {0.6, "Preparing..."},
-        {0.8, "Initializing..."},
-        {1.0, "Almost ready..."}
+        {0.25, "Connecting..."},
+        {0.5, "Downloading..."},
+        {0.75, "Preparing..."},
+        {1.0, "Ready!"}
     }
     
     for _, stage in ipairs(stages) do
         statusText.Text = stage[2]
         local tween = animateProgress(progressFill, stage[1])
         tween.Completed:Wait()
-        wait(0.4)
+        wait(0.2)  -- Faster loading stages
     end
     
-    -- Move up and show "Have fun" message
-    local moveUpTween = TweenService:Create(container, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-        Position = UDim2.new(0.5, -150, 0.3, -75)
+    -- Move up higher and show "Have fun" message
+    local moveUpTween = TweenService:Create(container, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0.5, -175, 0.2, -85)  -- Higher position
     })
+    
+    local shadowMoveUpTween = TweenService:Create(shadow, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+        Position = UDim2.new(0.5, -180, 0.2, -90)
+    })
+    
     moveUpTween:Play()
+    shadowMoveUpTween:Play()
     moveUpTween.Completed:Wait()
     
     mainText.Text = "Have fun!"
@@ -236,7 +247,7 @@ local function runLoader()
     statusText.Text = "Starting script..."
     progressBg.Visible = false
     
-    wait(1)
+    wait(0.8)  -- Faster "Have fun" display
     
     -- Load the actual script
     local success, result = pcall(function()
@@ -252,9 +263,9 @@ local function runLoader()
         warn("Script loading failed:", result)
     end
     
-    wait(1.5)
+    wait(1.2)  -- Faster success/error display
     
-    -- Slow fade out
+    -- Smooth fade out
     local fadeOutTween = TweenService:Create(container, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
         BackgroundTransparency = 1
     })
